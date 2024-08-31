@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #status {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .online {
+            color: green;
+        }
+        .offline {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Discord Bot Status</h1>
+    <p id="status">Checking status...</p>
+
+    <script>
+        async function checkBotStatus() {
+            try {
+                const response = await fetch('https://free.pylexnodes.net/server/42c38186');
+                const text = await response.text();
+
+                // Simple check to see if the bot is online
+                const isOnline = text.includes('ONLINE');
+                
+                const statusElement = document.getElementById('status');
+                if (isOnline) {
+                    statusElement.textContent = 'The bot is ONLINE';
+                    statusElement.classList.add('online');
+                } else {
+                    statusElement.textContent = 'The bot is OFFLINE';
+                    statusElement.classList.add('offline');
+                }
+            } catch (error) {
+                document.getElementById('status').textContent = 'Error fetching status';
+                console.error('Error fetching bot status:', error);
+            }
+        }
+
+        // Check the bot status on page load
+        checkBotStatus();
+    </script>
+</body>
+</html>
